@@ -2,7 +2,7 @@
 
 *In this lab, you’ll start building a procedural animation system for spider-like creatures, controlling a 3D armature directly with code.*
 
-![Spider Sentinels Render](<Images/spider sentinels render.png>)
+![Spider Sentinels Render](<Images/spider_sentinels_render.png>)
 
 ---
 
@@ -283,3 +283,4 @@ At this point, the rig works best on flat ground. The legs can snap to new posit
   - Polishing animations.  
   - Building encounters or challenges that use the spider enemies.  
   - Turning the rig into a fully playable or AI-driven mechanic.
+
