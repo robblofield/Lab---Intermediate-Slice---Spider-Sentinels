@@ -1,67 +1,105 @@
-# Lab - Intermediate Slice - Spider Sentinels Part 1 - Game Dev
-*In this lab we will begin to create a procedural animation system for insect/spider-like creatures that can be used to drive an existing 3D armature via code*
+# Lab – Intermediate Slice – Spider Sentinels (Part 1: Programming)
 
-![Spider Sentinels Render](<spider sentinels render.png>)
+*In this lab, you’ll start building a procedural animation system for spider-like creatures, controlling a 3D armature directly with code.*
+
+
+![Spider Sentinels Render](<Images/spider sentinels render.png>)
+
+---
 
 ### Additional Notes & Documentation
-### SpiderMechEnemy.fbx
-Your lab team will be creating a custom spider enemy for the lab, to implement the procedural animation on the finished design, ensure it has a standard armature (no ik or constraints) from Blender as an .fbx into Unity and closely look at the bones in the armature to make sure you are working with the correct selection. For the initial stages of this lab this you should use the provided SpiderMechEnemy.fbx uploaded to canvas as a template.
 
-### Refactoring/Temp Code
-This lab features some instances of code which will be refactored or completely overwritten in the following sessions, in some cases it is not demonstrating best practices, but instead focusing on fast implementation for testing so that we can progress forward. Feel free to refactor as you go, but make sure you remember what you chnaged so that the subsequent lab notes are mostly in line with your code base.
+#### SpiderMechEnemy.fbx  
+For this lab, start with the provided **`SpiderMechEnemy.fbx`** in the `Meshes` folder.  
 
-### Documentation
-[Unity Documentation - Animation Rigging](https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.3/manual/index.html)
+In future weeks, you’ll create your own custom spider enemy. When exporting from Blender:  
+- Use a **standard armature** (no IK or constraints).  
+- Export as `.fbx` and import into Unity.  
+- Double-check the armature bones so you’re working with the correct setup.
 
+#### Refactoring & Temp Code  
+Some code in this lab is temporary and will be replaced later. It focuses on quick testing, not best practices.  
+- You may refactor as you go.  
+- Keep notes of changes so later lab steps still align with your project.
 
-### Section 1 - Setting up IK in Unity
-* Install the Unity `Animation Rigging` package to your project
-* Select the .fbx in your scene and go to `Top Menu > Animation Rigging > Rig Setup`
-> This will add a new Empty to the scene that will hold the Unity rig, and it will pre-populate `animator` and `rig builder` components onto the parent object.
-* Rename the Unity rig to something suitable, such as `LegIK`
-* `Add a child to LegIK` and name it `Bone Constraint` (or similar)
-* Add a `Two Bone IK Constraint` component to `Bone Constraint` and set it up with the following parameters (The names used are from the sample model created by Rob, but your custom models may differ)
-  ```
-  Weight = 1
-  Root = Select the top bone in your leg assembly (FrontShoulder.L)
-  Mid = Select the highest bone in the leg assembly you want to control (FrontLegUpper.L)
-  Tip = Select the very last bone in the assembly (FrontLegLower.L_end)
-  Source objects > Target = Bone Constraint
-  ```
-![Two Bone IK Params](image-3.png)
+#### Documentation  
+[Unity Docs – Animation Rigging](https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.3/manual/index.html)
 
-* In the scene view, expand the `Animation Rigging floating window` and set the shape to a `sphere` and `size to 1` - this will give us a visual indicator of the IK target
-  
-![Creating an IK Indicator](image-4.png)
+--- 
 
-* Align the "Bone Constraint" game object with the tip of the leg via the Animation Rigging menu
+### Section 1 – Setting up IK in Unity
+
+1. Install the Unity **`Animation Rigging`** package in your project.  
+2. Select the `.fbx` in your scene and go to:  
+   `Top Menu > Animation Rigging > Rig Setup`  
+   > This adds a new Empty to the scene (the Unity rig) and automatically attaches **Animator** and **Rig Builder** components to the parent object.  
+3. Rename the Unity rig to something descriptive, e.g. **`LegIK`**.  
+4. Add a child to `LegIK` and name it **`Bone Constraint`** (or similar).  
+5. Add a **Two Bone IK Constraint** component to `Bone Constraint` and configure it:  
+
 ```
+
+Weight = 1
+Root = Top bone in the leg (FrontShoulder.L)
+Mid = Middle bone in the leg (FrontLegUpper.L)
+Tip = Final bone in the leg (FrontLegLower.L_end)
+Source Objects > Target = Bone Constraint
+
+```
+
+![Two Bone IK Params](Images/image-3.png)
+
+6. In the Scene view, expand the **Animation Rigging floating window**.  
+- Set **Shape = Sphere**  
+- Set **Size = 1**  
+> This gives a visual indicator for the IK target.  
+
+![Creating an IK Indicator](Images/image-4.png)
+
+7. Align the `Bone Constraint` object with the tip of the leg:  
+```
+
 Hierarchy > Select "Bone Constraint"
-Hierarchy > Ctrl+Click the "FrontLegLower.L_end" bone
+Hierarchy > Ctrl+Click "FrontLegLower.L_end"
 Top Menu > Animation Rigging > Align Transform
+
 ```
-> The IK target has now inherited the local transformation of the end of the bone. Keeping objects in their relative 3D space is very important in this workflow.
+> The IK target now inherits the local transform of the bone tip. Keeping objects aligned in local 3D space is critical in this workflow.  
 
-* Run the game to test the IK on the leg. You should be able to move the IK target around in the scene view and see the leg follow
-> If the IK is not behaving as expected, take a close look at your `Two Bone IK Constraint component`, to ensure it matches the example, additionally make sure you used the `Align Transform` option inside of `Animation Rigging`.
-* Duplicate the Bone Constraint until you have 4 (or however many legs you are creating)
-* Rename the Bone Constraints to `Bone Constraint 1/2/3/4`
-* Test the IK on all 4 legs
-* ![Testing the IK rig](image-5.png)
+8. Run the game to test the IK:  
+- Move the IK target in the Scene view.  
+- The leg should follow.  
+> If it doesn’t behave correctly, double-check your **Two Bone IK Constraint** settings and confirm you used **Align Transform**.  
 
-We have just added IK constraints to an existing armature created in Blender. Wherever we place those IK targets (Bone Constraints 1/2/3/4) in 3D space, the leg bones will attempt to go there (limited by the max length of the bones/legs)
+9. Duplicate the `Bone Constraint` until you have one for each leg (e.g. 4).  
+10. Rename them clearly: **`Bone Constraint 1/2/3/4`**.  
+11. Test the IK on all legs.  
 
+![Testing the IK rig](Images/image-5.png)
+
+---
+
+You’ve now added IK constraints to the Blender armature. Wherever the IK targets (`Bone Constraint 1/2/3/4`) are placed in 3D space, the leg bones will attempt to reach them (limited by bone length).
+
+---
 # Take a Break
-Take a break and think about how you would work on the next challenge:
-* Forcing the IK targets to stay perfectly still whilst the body moves around, this might be harder than you think as the IK constraints are children of the spider character
-> Why? - Ultimately we want the legs to stay grounded until they MUST move, the first step is to lock those feet while the body moves, then we can work on setting a new position for the feet to move to and trigger the movement.
 
-### Section 2 - Locking the IK Targets in space
-We'll need to write a simple script to keep on each IK target that sets its own `transform.position` in `Update()`, that way the IK targets stay in place, even when the parent moves.
-* Make an new script named `BoneConstraintController`
-* Have a go at writing it without looking at the example
-* Put the script on every `Bone Constraint object` and test by moving the character around
-* Check your method against the example to compare
+Pause here and consider the next challenge:  
+
+*How can we keep the IK targets perfectly still while the body moves?*  
+(Remember: the IK constraints are children of the spider character, so this is trickier than it sounds.)
+
+> **Why this matters:** The goal is to keep legs grounded until they *must* move. Step one is locking the feet while the body moves. Later, we’ll decide when and where the feet should step next.
+---
+
+### Section 2 – Locking IK Targets in Place
+
+We’ll write a small script for each IK target that re-applies its own `transform.position` in `Update()`. This pins the target so it stays put even when its parent moves.
+
+1. Create a new script named **`BoneConstraintController`**.
+2. Try writing it yourself before checking the example.
+3. Add the script to every **Bone Constraint** object, then test by moving the character around.
+4. Compare your solution against the example below.
 
 ```csharp
 using System.Collections;
@@ -83,42 +121,59 @@ public class BoneConstraintController : MonoBehaviour
         transform.position = currentIKPos;
     }
 }
-
 ```
+
+---
 
 # Take a Break
-Take a break and think about how you would work on the next challenge:
-* Setting an Ideal point resting point that the each leg should want to rest at so that as the character moves we automatically create a target point in 3D space where we should move the leg to. Additionally this new target point should work dynamically in the scene so that we can independently aim each foot higher or lower as required when the spider walks over obstacles.
-> Why? - If we don't factor in the terrain in our procedural animation code, then the legs will clip through geometry as we climb over stuff. 
+
+Consider the next challenge:
+
+**How can we define an ideal resting point for each leg** so that, as the character moves, we automatically generate a target in 3D space where that foot should step? This target should update dynamically with the scene so each foot can aim higher or lower when traversing obstacles.
+
+> **Why this matters:** Without terrain-aware targets, feet will clip through geometry when climbing or stepping over objects.
+
+---
 
 
-### Section 3 - Adding Leg Aiming
+### Section 3 – Adding Leg Aiming
 
-The next challenge is to create a leg aiming and grounding system. In this first part we will make cubes to represent where each leg should move to as its ideal resting location.
+Next, we’ll set up a basic leg aiming/grounding system. In this first pass, use cubes to mark each leg’s **ideal resting location**.
 
-
-* Create 4 new cubes named `Leg Aim 1/2/3/4` these will correspond to each of the `Bone Constraint 1/2/3/4` IK targets.
-* Use the `Animation Rigging` tools to align the `position` (not rotation) of each `Leg Aim` to each `Bone Constraint`
+1. Create **4 cubes** named **`Leg Aim 1/2/3/4`**. These correspond to **`Bone Constraint 1/2/3/4`**.
+2. Use **Animation Rigging** tools to align the **position (not rotation)** of each `Leg Aim` to its matching `Bone Constraint`:
 ```
+
 Hierarchy > Select "Leg Aim 1"
 Hierarchy > Ctrl+Click "Bone Constraint 1"
 Top Menu > Animation Rigging > Align Position
 
 ...Repeat for all 4 legs
+
 ```
-* Set the `Leg Aim objects` as children of the `LegIK game object` and tidy up your hierarchy as desired.
+3. Make the **Leg Aim objects** children of the **`LegIK`** GameObject and tidy the hierarchy as you like.
 
-![Leg Aim Cubes in position and tidied up hierarchy](image-7.png)
+![Leg Aim Cubes in position and tidied up hierarchy](Images/image-7.png)
 
-> I have created two extra empty parents to hold the Leg Aim and Bone Constraint objects, additionally i have renamed my `Rig` and `Spider` trees to show that they are the original armature/mesh from Blender, and make it clearer that `LegIK` contains all of the Unity-based procedural animation. This is entirely optional for the sake of clarity.
+> Optional cleanup: You can add empty parent objects to group **Leg Aim** and **Bone Constraint** objects. Renaming your original `Rig`/`Spider` trees to indicate they’re the Blender armature/mesh can also clarify that **`LegIK`** contains all Unity-based procedural animation.
 
-* Run the game to test that the Leg Aim objects move with the main body of the character, but the feet are still stuck to the ground. These white cubes indicate where the character will be moving to.
+4. Run the game to verify:
+- **Leg Aim** cubes move with the character body.
+- Feet remain pinned to the ground (from Section 2).
+- The white cubes indicate where the legs will try to move next.
 
-![Initial test of Leg Aims](image-8.png)
+![Initial test of Leg Aims](Images/image-8.png)
+
+---
 
 # Take a Break
-Take a break and think about how you would work on the next challenge:
-* Updating the leg positions when the leg aim object gets far enough away
+
+Think about the next challenge:
+
+- **When and how should we update a leg’s position** once its **Leg Aim** object gets far enough away?
+
+---
+
 
 ### Section 4 - Updating the Leg Positions
 In this next part we will update the `BoneConstraintController` to measure the distance between the `currentIKPosition` and the `legAimPosition` - we'll call this variable `currentStepDistance`. Once `currentStepDistance` becomes greater than our `maxStepDistance`, we will set the `currentIKPosition` equal to the `legAimPosition` - snapping it to its new location
@@ -163,7 +218,7 @@ void Update()
 * Drag the `Leg Aim 1/2/3/4` objects into the `Leg Aim Position` fields within the `BoneConstraintsController` component on each corresponding `Bone Constraint 1/2/3/4` object
 * Set the `Max Step Distance` to `2`
 
-![Referencing the Leg Aims in the Inspector](image-9.png)
+![Referencing the Leg Aims in the Inspector](Images/image-9.png)
 
 * Test the game now to see if these behaviors are working as expected. These additions should now allow you to move the spider character around, and the IK legs should jump to the new position after the distance becomes large enough.
 
@@ -229,15 +284,15 @@ if (Physics.Raycast(raycastOrigin.transform.position + groundingOffset, -transfo
 ```
 > You will then need to give each leg aim an new `Empty Parent`, align position to the corresponding leg using the `Animation Rigging Menu` and set it's transform to have a suitable Y value. Using the `Animation Rigging floating window` to add some visual indicators for these is a good idea. In the example below i have created green spheres to indicate the raycast origins
 
-![Raycast Origins](image-10.png)
+![Raycast Origins](Images/image-10.png)
 
 Build out some basic obstacles to test the rig, we should now be able to handle low steps and slopes of uneven terrain, and be able to get back up if we drop down to a lower step. 
 
-![Small Steps and Slopes example](image-11.png)
+![Small Steps and Slopes example](Images/image-11.png)
 
 However, Our entire IK system still relies on the position and rotation of the main body as it's parent, so if we try to ascend to terrain that is higher than our body, we will begin to clip, through, and eventually our raycastOrigin objects will be below the slope and will snap to objects below.
 
-![Large Slope Example](image-12.png)
+![Large Slope Example](Images/image-12.png)
 
 As we build out further functionality to the rig we will need a way to normalize our body position and rotation from the current position of each leg. But for this lab we will focus on getting a good base level of movement on uneven terrain. lets get each leg moving to the new position in sequence where each leg waits for it's opposite to stop moving.
 
@@ -305,12 +360,12 @@ private void SetIKPosition()
 > * 4 --Opposite Leg-- 3
 > Your implementation may differ depending on how you set up your legs
 
-![Example Implementation within Inspector](image-13.png)
+![Example Implementation within Inspector](Images/image-13.png)
 
 * Run the program and test the rig, each leg should now move in sequence separately to it's opposite counterpart.
 
 ### Lab Summary
-We have implemented the fundamentals for this type of procedural animation controller, and assuming a flat terrain or flat terrain with small uneven details, this controller, and a wide camera perspective such as an isometric view to mostly obscure the lets snapping to new positions rather than animating smoothly across an arc; this may be functional enough to implement into gameplay. For this lab however, we will be improving this controller with a lot more functionality, an overview of the next problems to solve are below:
+We have implemented the fundamentals for this type of procedural animation controller, and assuming a flat terrain or flat terrain with small uneven details, this controller, and a wide camera perspective such as an isometric view to mostly obscure the legs snapping to new positions rather than animating smoothly across an arc; this may be functional enough to implement into gameplay. For this lab however, we will be improving this controller with a lot more functionality, an overview of the next problems to solve are below:
 
 **Lab Part 2**
 * AI Navmesh to auto-follow the player
@@ -322,12 +377,23 @@ We have implemented the fundamentals for this type of procedural animation contr
 * Body adjusting rotation and position based on the leg positions
 * Finding and compensating the body position and rotation transitioning to vertical or near vertical walls
 
+**Lab Part 4**
+* Turning the mechanic into a game
 
 
 
 
 
 
+<details>
+<summary>💡 Hint / Example Code (click to expand)</summary>
+
+```csharp
+public class Example : MonoBehaviour {
+    void Update() {
+        Debug.Log("This is hidden by default.");
+    }
+}
 
 
 
