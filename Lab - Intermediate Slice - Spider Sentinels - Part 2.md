@@ -11,9 +11,54 @@
 
 ---
 
-### Prerequisites
-- A **Ground** layer exists and all floor/terrain meshes have **colliders** and are assigned to **Ground**.
-- You have **Leg Aim 1/2/3/4** objects set up (children of **`LegIK`**) from Part 1.
+````markdown
+### Additional Notes & Documentation
+
+#### Ground & Terrain Setup  
+For this lab, you’ll need a **Ground** layer assigned to all walkable surfaces in your scene.  
+- Apply this layer to all floor, terrain, or obstacle meshes with **colliders**.  
+- This ensures your **raycasts** correctly detect the ground when snapping Leg Aims to the surface.
+
+> **Tip:** Avoid using Mesh Colliders on high-poly terrain. Wherever possible, use **Box**, **Capsule**, or **Terrain Colliders** for better performance.
+
+#### Raycasting in Unity  
+We’re using **Physics.Raycast()** to detect the ground below each leg.  
+A raycast is an invisible line that projects in a direction and reports what it hits.  
+You can customize it with a **LayerMask** to only detect specific objects.  
+
+Example syntax:  
+```csharp
+if (Physics.Raycast(origin, direction, out hit, maxDistance, layerMask))
+{
+    // Code runs when the ray hits something on that layer
+}
+````
+
+Common parameters:
+
+| Parameter     | Description                                                                   |
+| ------------- | ----------------------------------------------------------------------------- |
+| `origin`      | Starting point of the ray (e.g. the leg or a parent “raycast origin”).        |
+| `direction`   | Usually `Vector3.down` to check below.                                        |
+| `out hit`     | Stores information about what the ray hit (position, normal, collider, etc.). |
+| `maxDistance` | Maximum length of the ray (can be large like `Mathf.Infinity`).               |
+| `layerMask`   | Restricts what layers the ray interacts with.                                 |
+
+#### Refactoring & Temp Code
+
+Like Part 1, some solutions here are intentionally simple for clarity. Later sessions will refactor this system to:
+
+* Smooth foot movement over time.
+* Average multiple raycast hits for more stable results.
+* Blend between body and leg heights dynamically.
+
+Keep comments and make note of any small adjustments you apply (offset values, layer names, collider tweaks, etc.) so you can reference them in later labs.
+
+#### Documentation
+
+* [Unity Docs – Physics.Raycast](https://docs.unity3d.com/ScriptReference/Physics.Raycast.html)
+* [Unity Docs – LayerMask](https://docs.unity3d.com/ScriptReference/LayerMask.html)
+* [Unity Docs – Colliders Overview](https://docs.unity3d.com/Manual/CollidersOverview.html)
 
 ---
 
