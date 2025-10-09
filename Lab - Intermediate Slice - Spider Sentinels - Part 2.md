@@ -24,7 +24,8 @@ For this lab, you’ll need a **Ground** layer assigned to all walkable surfaces
 
 #### Raycasting in Unity  
 We’re using **Physics.Raycast()** to detect the ground below each leg.  
-A raycast is an invisible line that projects in a direction and reports what it hits.  
+A raycast is an invisible line that projects in a direction and reports what it hits.
+You can use Raycast Debugging to visualize the Ray in the scene view.
 You can customize it with a **LayerMask** to only detect specific objects.  
 
 Example syntax:  
