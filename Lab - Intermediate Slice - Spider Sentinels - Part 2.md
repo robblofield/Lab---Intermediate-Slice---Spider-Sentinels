@@ -2,6 +2,7 @@
 
 *In this lab, you’ll make the legs terrain-aware: detecting ground with raycasts, keeping Leg Aims aligned to steps/slopes/uneven ground, and fixing a raycast origin bug from the simple approach.*
 
+![Spider Sentinels Render](<Images/spider sentinels render.png>)
 ---
 
 ### Quick Recap (from Part 1)
@@ -11,7 +12,7 @@
 
 ---
 
-````markdown
+
 ### Additional Notes & Documentation
 
 #### Ground & Terrain Setup  
@@ -210,10 +211,36 @@ As the body climbs, the parented nature of the current rig can cause:
 
 ---
 
-# Take a Break
+### Lab Summary
 
-Think about the next challenge:  
-- **How will you prevent both legs of a pair from moving at the same time?**  
-  (Hint: have each leg move only if its **opposite** is not currently moving.)
+In this session, you extended your spider’s procedural animation system to make it **terrain-aware**.  
+
+- Implemented **raycast-based grounding** to detect surfaces below each leg.  
+- Ensured **Leg Aims** always align to the ground, adjusting dynamically across steps and slopes.  
+- Solved the **raycast origin bug** by introducing stable parent objects to cast from, allowing legs to “see” higher terrain again.  
+- Tested the rig across uneven environments and confirmed reliable contact on varying ground heights.  
+
+Your spider can now walk over uneven terrain without its feet floating or clipping through geometry, establishing the groundwork for more advanced movement logic in future sessions.
 
 ---
+
+### Next Steps in Future Lab Sessions
+
+**Lab Part 3**  
+- Coordinating leg movement so paired legs alternate (no simultaneous stepping).  
+- Introducing smooth step arcs for more natural leg motion.  
+
+**Lab Part 4**  
+- Refining foot motion profiles (e.g. slow lift, fast drop).  
+- Implementing interpolation and easing for step transitions.  
+
+**Lab Part 5**  
+- Adjusting body height and rotation dynamically based on leg contact points.  
+- Maintaining stable body posture over uneven terrain.  
+
+**Lab Part 6+**  
+- Expanding to gameplay systems:  
+  - Integrating navigation (NavMesh or AI movement).  
+  - Polishing procedural animations and timing.  
+  - Preparing the full system for player or AI-controlled spiders.
+
