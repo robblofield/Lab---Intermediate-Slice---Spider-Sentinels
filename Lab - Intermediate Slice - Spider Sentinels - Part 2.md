@@ -190,7 +190,8 @@ Let’s validate behavior on uneven ground.
    - Gentle slopes.
    - A small drop to a lower platform and a path back up.
 2. Ensure all meshes have **colliders** and are on the **Ground** layer.
-3. Play the scene and move the spider:
+3. Depending on your implementation you may need to set the rigidbody of your ground elements to `isKinematic` to stop avoid physics collisions with your spider    
+4. Play the scene and move the spider:
    - Leg Aims should **track** the terrain and remain slightly above it.
    - After stepping down, they should still detect higher ground via the **raycast origin**.
 
