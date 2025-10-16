@@ -1,6 +1,7 @@
 # Lab – Intermediate Slice – Spider Sentinels (Part 3: Alternating Opposite Legs)
 
 *In this lab, you’ll coordinate leg movement so diagonally opposite pairs do not step at the same time. We’ll build directly on Part 1–2 and refactor the `BoneConstraintController` to respect “opposite leg is moving” checks.*
+
 ![Spider Sentinels Render](<Images/spider sentinels render.png>)
 ---
 
